@@ -5,15 +5,18 @@ import App from "./App.jsx";
 import UserProvider from "./context/UserProvider.jsx";
 import ProductProvider from "./context/ProductProvider.jsx";
 import SuggestionProvider from "./context/SuggestionProvider.jsx";
+import { BrowserRouter } from "react-router-dom";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <UserProvider>
-      <ProductProvider>
-        <SuggestionProvider>
-          <App />
-        </SuggestionProvider>
-      </ProductProvider>
-    </UserProvider>
+    <BrowserRouter>
+      <UserProvider>
+        <ProductProvider>
+          <SuggestionProvider>
+            <App />
+          </SuggestionProvider>
+        </ProductProvider>
+      </UserProvider>
+    </BrowserRouter>
   </StrictMode>,
 );
