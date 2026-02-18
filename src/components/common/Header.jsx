@@ -1,15 +1,20 @@
+import { useContext } from "react";
 import { CgProfile } from "react-icons/cg";
 import { HiLightBulb } from "react-icons/hi2";
+import { FaList } from "react-icons/fa";
+import { UserContext } from "../../context/UserProvider";
+import { NavLink } from "react-router-dom";
 function Header() {
+  const { logout } = useContext(UserContext);
   return (
     <header>
-      <nav class="navbar navbar-expand-lg bg-body-secondary">
-        <div class="container-fluid">
-          <a class="navbar-brand fw-bold" href="#">
+      <nav className="navbar navbar-expand-lg bg-warning">
+        <div className="container-fluid">
+          <a className="navbar-brand fw-bold" href="#">
             LOGO
           </a>
           <button
-            class="navbar-toggler"
+            className="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbarNav"
@@ -17,19 +22,58 @@ function Header() {
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span class="navbar-toggler-icon"></span>
+            <span className="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse " id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-              <li class="nav-item">
-                <a class="nav-link fs-4 active me-2" aria-current="page" href="#">
-                  <HiLightBulb />
-                </a>
+          <div className="collapse navbar-collapse " id="navbarNav">
+            <ul className="navbar-nav ms-auto">
+              <li className="nav-item">
+                <NavLink
+                  className="nav-link fs-4 active"
+                  aria-current="page"
+                  to="/"
+                >
+                  <FaList />
+                </NavLink>
               </li>
-              <li class="nav-item">
-                <a class="nav-link fs-4" href="#">
+              <li className="nav-item">
+                <NavLink
+                  className="nav-link fs-4 active"
+                  aria-current="page"
+                  to="/suggestions"
+                >
+                  <HiLightBulb />
+                </NavLink>
+              </li>
+
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link fs-4"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
                   <CgProfile />
                 </a>
+                <ul className="dropdown-menu dropdown-menu-end">
+                  <li>
+                    <NavLink
+                      className="dropdown-item text-center 
+                    text-decoration-none text-black"
+                      to="/profile"
+                    >
+                      Profile
+                    </NavLink>
+                  </li>
+                  <li>
+                    <button
+                      className="dropdown-item text-center text-danger"
+                      onClick={logout}
+                    >
+                      Logout
+                    </button>
+                  </li>
+                </ul>
               </li>
             </ul>
           </div>

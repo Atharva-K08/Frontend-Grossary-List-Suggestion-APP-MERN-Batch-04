@@ -24,8 +24,13 @@ function UserProvider({ children }) {
       setError(err.message);
     }
   };
+  const logout = () => {
+    localStorage.removeItem("auth");
+    localStorage.removeItem("token");
+    navigator("/login")
+  };
   return (
-    <UserContext.Provider value={{ auth, login, error }}>
+    <UserContext.Provider value={{ auth, login, error, logout }}>
       {children}
     </UserContext.Provider>
   );
