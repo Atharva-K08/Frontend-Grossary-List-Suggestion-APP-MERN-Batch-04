@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 export const ProductContext = createContext();
 function ProductProvider({ children }) {
   const navigator = useNavigate();
+  const [productList, setList] = useState([]);
   const [error, setError] = useState("");
   const addProduct = async (payload) => {
     try {
@@ -19,8 +20,22 @@ function ProductProvider({ children }) {
       setError(err.message);
     }
   };
+
+  const loadProducts = async () => {
+    try {
+      console.log("called")
+      const res = await axios.get("http://localhost:3000/api/products");
+      console.log(res.data);
+      setList(res.data.list);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   return (
-    <ProductContext.Provider value={{ error, addProduct }}>
+    <ProductContext.Provider
+      value={{ error, addProduct, productList, loadProducts }}
+    >
       {children}
     </ProductContext.Provider>
   );
