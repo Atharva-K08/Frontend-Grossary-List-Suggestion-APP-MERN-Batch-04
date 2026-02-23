@@ -7,6 +7,8 @@ function ProductProvider({ children }) {
   const navigator = useNavigate();
   const [productList, setList] = useState([]);
   const [error, setError] = useState("");
+  const [isEditable, setEdit] = useState(false);
+  const [editProduct, setProduct] = useState(null);
   const addProduct = async (payload) => {
     try {
       const res = await axios.post(
@@ -20,10 +22,24 @@ function ProductProvider({ children }) {
       setError(err.message);
     }
   };
-
+  const updateProduct = async (payload) => {
+    try {
+      const res = await axios.put(
+        `http://localhost:3000/api/products/${payload._id}`,
+        payload,
+      );
+      if (res.data.success) {
+        navigator("/");
+        setEdit(false);
+        setProduct(null);
+      }
+    } catch (err) {
+      setError(err.message);
+    }
+  };
   const loadProducts = async () => {
     try {
-      console.log("called")
+      console.log("called");
       const res = await axios.get("http://localhost:3000/api/products");
       console.log(res.data);
       setList(res.data.list);
@@ -34,7 +50,17 @@ function ProductProvider({ children }) {
 
   return (
     <ProductContext.Provider
-      value={{ error, addProduct, productList, loadProducts }}
+      value={{
+        error,
+        addProduct,
+        productList,
+        loadProducts,
+        isEditable,
+        setEdit,
+        editProduct,
+        setProduct,
+        updateProduct,
+      }}
     >
       {children}
     </ProductContext.Provider>

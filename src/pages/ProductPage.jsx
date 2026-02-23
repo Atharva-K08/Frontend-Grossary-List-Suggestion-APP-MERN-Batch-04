@@ -1,14 +1,22 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ProductContext } from "../context/ProductProvider";
 
 function ProductPage() {
-  const {error, addProduct} = useContext(ProductContext);
+  const { error, addProduct, isEditable, editProduct, updateProduct } =
+    useContext(ProductContext);
   const [formData, setData] = useState({
     productCategory: "",
     productName: "",
     productQuantity: "",
     productUnit: "",
   });
+  useEffect(() => {
+    if (isEditable) {
+      setData(editProduct);
+    } else {
+      reset();
+    }
+  }, []);
   const reset = () => {
     setData({
       productCategory: "",
@@ -25,7 +33,14 @@ function ProductPage() {
   };
   const submitHander = (e) => {
     e.preventDefault();
-    addProduct(formData);
+    if (isEditable) {
+      updateProduct({
+        _id: editProduct._id,
+        ...formData,
+      });
+    } else {
+      addProduct(formData);
+    }
     reset();
   };
   return (
@@ -34,7 +49,7 @@ function ProductPage() {
       className="container d-flex justify-content-center align-items-center"
     >
       <form onSubmit={submitHander} className="w-50 card p-3 shadow gap-4">
-        <h1 className="text-center mb-2">Login Here</h1>
+        <h1 className="text-center mb-2">Create Product</h1>
         {error && <div className="alert alert-danger">{error}</div>}
         <input
           type="text"
