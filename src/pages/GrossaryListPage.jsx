@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { ProductContext } from "../context/ProductProvider";
 import { useEffect } from "react";
 function GrossaryListPage() {
-  const { loadProducts, productList, setEdit, setProduct, editProduct } =
+  const { loadProducts, productList, setEdit, setProduct, editProduct, deleteProduct } =
     useContext(ProductContext);
   const navigator = useNavigate();
   useEffect(() => {
@@ -39,7 +39,7 @@ function GrossaryListPage() {
                         <div>{prod.productUnit}</div>
                       </div>
                       <div className="d-flex gap-2">
-                        <button className="btn btn-sm btn-success">
+                        <button onClick={()=> deleteProduct(prod)} className="btn btn-sm btn-success">
                           Bought
                         </button>
                         <button
@@ -48,7 +48,7 @@ function GrossaryListPage() {
                         >
                           Edit
                         </button>
-                        <button className="btn btn-sm btn-danger text-white">
+                        <button onClick={() => deleteProduct(prod)} className="btn btn-sm btn-danger text-white">
                           Cancel
                         </button>
                       </div>

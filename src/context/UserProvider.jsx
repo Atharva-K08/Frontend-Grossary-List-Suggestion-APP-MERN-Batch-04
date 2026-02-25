@@ -16,7 +16,7 @@ function UserProvider({ children }) {
       );
       if (res.data.success) {
         localStorage.setItem("auth", "true");
-        localStorage.setItem("token", JSON.stringify(res.data.token));
+        localStorage.setItem("token", res.data.token);
         setAuth(true);
         navigator("/");
       }

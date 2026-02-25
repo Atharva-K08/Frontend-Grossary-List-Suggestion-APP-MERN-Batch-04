@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 export const ProductContext = createContext();
 function ProductProvider({ children }) {
   const navigator = useNavigate();
+  const token = localStorage.getItem("token");
   const [productList, setList] = useState([]);
   const [error, setError] = useState("");
   const [isEditable, setEdit] = useState(false);
@@ -14,6 +15,11 @@ function ProductProvider({ children }) {
       const res = await axios.post(
         "http://localhost:3000/api/products",
         payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
       if (res.data.success) {
         navigator("/");
@@ -27,6 +33,11 @@ function ProductProvider({ children }) {
       const res = await axios.put(
         `http://localhost:3000/api/products/${payload._id}`,
         payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
       if (res.data.success) {
         navigator("/");
@@ -37,10 +48,32 @@ function ProductProvider({ children }) {
       setError(err.message);
     }
   };
+  const deleteProduct = async (payload) => {
+    try {
+      const res = await axios.delete(
+        `http://localhost:3000/api/products/${payload._id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      if (res.data.success) {
+        navigator("/");
+        loadProducts();
+      }
+    } catch (err) {
+      setError(err.message);
+    }
+  };
   const loadProducts = async () => {
     try {
       console.log("called");
-      const res = await axios.get("http://localhost:3000/api/products");
+      const res = await axios.get("http://localhost:3000/api/products", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       console.log(res.data);
       setList(res.data.list);
     } catch (err) {
@@ -60,6 +93,7 @@ function ProductProvider({ children }) {
         editProduct,
         setProduct,
         updateProduct,
+        deleteProduct,
       }}
     >
       {children}
